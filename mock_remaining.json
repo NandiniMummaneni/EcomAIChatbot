@@ -1,0 +1,200 @@
+    {
+      "id": 21,
+      "name": "Indoor Plant Collection",
+      "price": 3817,
+      "description": "Set of 3 low-maintenance indoor plants perfect for home decoration.",
+      "image": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400",
+      "category": "home",
+      "rating": 4.6,
+      "inStock": true
+    },
+    {
+      "id": 22,
+      "name": "Modern Table Lamp",
+      "price": 10789,
+      "description": "Sleek LED table lamp with adjustable brightness and USB charging port.",
+      "image": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400",
+      "category": "home",
+      "rating": 4.4,
+      "inStock": true
+    },
+    {
+      "id": 23,
+      "name": "Throw Pillow Set",
+      "price": 3319,
+      "description": "Set of 2 decorative throw pillows with removable covers in various patterns.",
+      "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400",
+      "category": "home",
+      "rating": 4.3,
+      "inStock": true
+    },
+    {
+      "id": 24,
+      "name": "Coffee Table",
+      "price": 16599,
+      "description": "Modern glass-top coffee table with wooden legs and storage shelf.",
+      "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400",
+      "category": "home",
+      "rating": 4.5,
+      "inStock": true
+    },
+    {
+      "id": 25,
+      "name": "Wall Art Canvas",
+      "price": 6639,
+      "description": "Abstract canvas wall art print ready to hang, available in multiple sizes.",
+      "image": "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400",
+      "category": "home",
+      "rating": 4.2,
+      "inStock": true
+    },
+    {
+      "id": 26,
+      "name": "Kitchen Utensil Set",
+      "price": 4149,
+      "description": "Complete 12-piece kitchen utensil set with bamboo handles and holder.",
+      "image": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400",
+      "category": "home",
+      "rating": 4.7,
+      "inStock": true
+    },
+    {
+      "id": 27,
+      "name": "Scented Candles",
+      "price": 2074,
+      "description": "Set of 3 aromatherapy candles with natural soy wax and essential oils.",
+      "image": "https://images.unsplash.com/photo-1602874801006-e26d3d17d0ed?w=400",
+      "category": "home",
+      "rating": 4.4,
+      "inStock": true
+    },
+    {
+      "id": 28,
+      "name": "Storage Baskets",
+      "price": 2904,
+      "description": "Set of 3 woven storage baskets in different sizes for organization.",
+      "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400",
+      "category": "home",
+      "rating": 4.1,
+      "inStock": true
+    },
+    {
+      "id": 29,
+      "name": "Floor Mirror",
+      "price": 12449,
+      "description": "Full-length floor mirror with wooden frame and adjustable stand.",
+      "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400",
+      "category": "home",
+      "rating": 4.6,
+      "inStock": false
+    },
+    {
+      "id": 30,
+      "name": "Area Rug",
+      "price": 7469,
+      "description": "Soft area rug with geometric pattern, available in multiple sizes and colors.",
+      "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400",
+      "category": "home",
+      "rating": 4.3,
+      "inStock": true
+    },
+    {
+      "id": 31,
+      "name": "Programming Fundamentals",
+      "price": 3319,
+      "description": "Comprehensive guide to learning programming with practical examples and exercises.",
+      "image": "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400",
+      "category": "books",
+      "rating": 4.8,
+      "inStock": true
+    },
+    {
+      "id": 32,
+      "name": "Digital Marketing Handbook",
+      "price": 2489,
+      "description": "Complete guide to digital marketing strategies and best practices for modern businesses.",
+      "image": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400",
+      "category": "books",
+      "rating": 4.1,
+      "inStock": true
+    },
+    {
+      "id": 33,
+      "name": "Fiction Novel Collection",
+      "price": 4149,
+      "description": "Set of 3 bestselling fiction novels from award-winning authors.",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+      "category": "books",
+      "rating": 4.5,
+      "inStock": true
+    },
+    {
+      "id": 34,
+      "name": "Cookbook for Beginners",
+      "price": 2074,
+      "description": "Easy-to-follow cookbook with 100+ simple recipes for cooking beginners.",
+      "image": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400",
+      "category": "books",
+      "rating": 4.3,
+      "inStock": true
+    },
+    {
+      "id": 35,
+      "name": "Self-Help Guide",
+      "price": 1659,
+      "description": "Motivational self-help book with practical tips for personal development.",
+      "image": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+      "category": "books",
+      "rating": 4.2,
+      "inStock": true
+    },
+    {
+      "id": 36,
+      "name": "History Encyclopedia",
+      "price": 4979,
+      "description": "Comprehensive encyclopedia covering world history from ancient to modern times.",
+      "image": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400",
+      "category": "books",
+      "rating": 4.6,
+      "inStock": true
+    },
+    {
+      "id": 37,
+      "name": "Art & Design Book",
+      "price": 3734,
+      "description": "Beautiful coffee table book featuring contemporary art and design principles.",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+      "category": "books",
+      "rating": 4.4,
+      "inStock": true
+    },
+    {
+      "id": 38,
+      "name": "Science Textbook",
+      "price": 6639,
+      "description": "Advanced science textbook covering physics, chemistry, and biology concepts.",
+      "image": "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400",
+      "category": "books",
+      "rating": 4.0,
+      "inStock": false
+    },
+    {
+      "id": 39,
+      "name": "Travel Guide Collection",
+      "price": 2904,
+      "description": "Set of travel guides for popular destinations with maps and recommendations.",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+      "category": "books",
+      "rating": 4.3,
+      "inStock": true
+    },
+    {
+      "id": 40,
+      "name": "Children's Story Books",
+      "price": 2489,
+      "description": "Collection of 5 illustrated children's story books for ages 3-8.",
+      "image": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+      "category": "books",
+      "rating": 4.7,
+      "inStock": true
+    }
