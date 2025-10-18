@@ -1,22 +1,24 @@
-**🤖 AI-Ready Chatbot Platform (Project Name : HYKAA MVP)**
+**🤖 AI-Ready Chatbot Platform (Project Name - HYKAA MVP):**
+
 A responsive, full-stack application featuring a **lightweight, custom-built chatbot** currently deployed on an **Angular** frontend. This project demonstrates core Full Stack proficiency, clean API design, and a clear pathway for advanced AI integration, leveraging a modern Python/ML architecture.
 
-**🌟 Key Features(Current MVP : Showcasing Core Competancy)**
-**Full-Stack Architecture:** Client-side built using **Angular** and **TypeScript** for a dynamic, interactive UI.
+**🌟 Key Features(Current MVP - Showcasing Core Competancy):**
 
-**Rule-Based Backend:** Utilizes a custom, highly optimized, minimal-dependency Python engine for immediate, low-latency pattern matching.
+**1. Full-Stack Architecture:** Client-side built using **Angular** and **TypeScript** for a dynamic, interactive UI.
+**2. Rule-Based Backend:** Utilizes a custom, highly optimized, minimal-dependency Python engine for immediate, low-latency pattern matching.
+**3. Minimal Latency:** Achieves ultra-fast response times through simple pattern matching, proving capability in performance-focused API design.
+**4. API Foundation:** Designed with a scalable REST API to easily interchange the current rule-based engine with future complex AI models.
 
-**Minimal Latency:** Achieves ultra-fast response times through simple pattern matching, proving capability in performance-focused API design.
-
-**API Foundation:** Designed with a scalable REST API to easily interchange the current rule-based engine with future complex AI models.
-
-**📈 AI/ML Roadmap & Future Scope (Highlighting AI Expertise)**
+**📈 AI/ML Roadmap & Future Scope (Highlighting AI Expertise):**
 The core purpose of this project is to serve as a production-ready base for implementing advanced AI/ML features. Future updates will strategically leverage specialized skills, including:
 
 **Natural Language Understanding (NLU):** Transitioning from rule-based to context-aware NLP using Python with libraries like Hugging Face Transformers for sentiment and intent analysis.
+**1. LLM Integration:** Integrating an LLM-powered agent (e.g., via LangChain or direct GPT API) to provide deep, context-aware shopping recommendations and multi-turn conversational support.
+**2. MLOps Deployment:** Utilizing Azure for scalable cloud deployment and implementing robust MLOps workflows for model versioning, continuous training, and monitoring of predictive analytics models.
+**3. Predictive Analytics:** Developing a deep learning model to predict customer purchasing behavior based on chat history and browsing patterns.
 
-**LLM Integration:** Integrating an LLM-powered agent (e.g., via LangChain or direct GPT API) to provide deep, context-aware shopping recommendations and multi-turn conversational support.
-
-**MLOps Deployment:** Utilizing Azure for scalable cloud deployment and implementing robust MLOps workflows for model versioning, continuous training, and monitoring of predictive analytics models.
-
-**Predictive Analytics:** Developing a deep learning model to predict customer purchasing behavior based on chat history and browsing patterns.
+**🛠️ Technology Stack:**
+**1. Frontend** - Angular, TypeScript, HTML5, SCSS
+**2. Backend/Core** - Python, FastAPI/Flask (for REST APIs)
+**3. Future AI Focus** - LLMs, NLP, Deep Learning, LangChain, Hugging Face
+**4. Cloud/DevOps** - Azure (Deployment target), Git, CI/CD
