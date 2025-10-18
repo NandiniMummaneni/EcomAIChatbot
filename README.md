@@ -1,4 +1,4 @@
-**🤖 AI-Ready Chatbot Platform (Project Name : Hykaa MVP)**
+**🤖 AI-Ready Chatbot Platform (Project Name : HYKAA MVP)**
 A responsive, full-stack application featuring a **lightweight, custom-built chatbot** currently deployed on an **Angular** frontend. This project demonstrates core Full Stack proficiency, clean API design, and a clear pathway for advanced AI integration, leveraging a modern Python/ML architecture.
 
 **🌟 Key Features(Current MVP : Showcasing Core Competancy)**
