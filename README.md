@@ -18,7 +18,7 @@ The core purpose of this project is to serve as a production-ready base for impl
 **3. Predictive Analytics:** Developing a deep learning model to predict customer purchasing behavior based on chat history and browsing patterns.
 
 **🛠️ Technology Stack:**
-**1. Frontend** - Angular, TypeScript, HTML5, SCSS
+**1. Frontend** - Angular, TypeScript, HTML5, CSS
 **2. Backend/Core** - Python, FastAPI/Flask (for REST APIs)
 **3. Future AI Focus** - LLMs, NLP, Deep Learning, LangChain, Hugging Face
 **4. Cloud/DevOps** - Azure (Deployment target), Git, CI/CD
