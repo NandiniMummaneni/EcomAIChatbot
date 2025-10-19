@@ -123,8 +123,33 @@ import { FormsModule } from '@angular/forms';
     }
     @media (max-width: 768px) {
       .chatbot-container {
-        width: 300px;
+        width: calc(100vw - 20px);
+        max-width: 350px;
         right: 10px;
+        left: 10px;
+        margin: 0 auto;
+      }
+      .chatbot-body {
+        max-height: 300px;
+      }
+      .messages {
+        height: 200px;
+      }
+    }
+    @media (max-width: 480px) {
+      .chatbot-container {
+        bottom: 10px;
+        width: calc(100vw - 20px);
+      }
+      .message {
+        max-width: 90%;
+        font-size: 14px;
+      }
+      .input-area {
+        padding: 0.75rem;
+      }
+      .message-input {
+        font-size: 14px;
       }
     }
   `]
@@ -138,6 +163,12 @@ export class ChatbotComponent {
 
   toggleChat() {
     this.isOpen = !this.isOpen;
+    
+    if (!this.isOpen) {
+      this.messages = [
+        { type: 'bot', content: 'Hi! I\'m REX, your AI shopping assistant. How can I help you today?' }
+      ];
+    }
   }
 
   sendMessage() {
@@ -152,114 +183,245 @@ export class ChatbotComponent {
   }
 
   private getBotResponse(message: string): string {
-    const lowerMessage = message.toLowerCase();
+    const analysis = this.analyzeMessage(message);
+    return this.generateIntelligentResponse(message, analysis);
+  }
+
+  private analyzeMessage(message: string): any {
+    const tokens = this.tokenize(message);
+    const sentiment = this.analyzeSentiment(message);
+    const intent = this.classifyIntent(message, tokens);
+    const entities = this.extractEntities(message);
+    const context = this.analyzeContext(message);
     
-    // Greetings and pleasantries
-    if (this.matchesPattern(lowerMessage, ['hi', 'hello', 'hey', 'good morning', 'good afternoon', 'good evening', 'greetings'])) {
-      const greetings = [
-        'Hello there! I\'m REX, your personal AI stylist. How can I help you find the perfect products today?',
-        'Hi! Great to see you! I\'m here to help you discover amazing products. What are you looking for?',
-        'Hey! Welcome to EcomAI! I\'m REX, and I\'d love to help you find exactly what you need.'
-      ];
-      return this.getRandomResponse(greetings);
+    return { tokens, sentiment, intent, entities, context, confidence: this.calculateConfidence(intent, entities, sentiment) };
+  }
+
+  private tokenize(text: string): string[] {
+    return text.toLowerCase()
+      .replace(/[^\w\s]/g, ' ')
+      .split(/\s+/)
+      .filter(token => token.length > 0 && !this.isStopWord(token));
+  }
+
+  private isStopWord(word: string): boolean {
+    const stopWords = ['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by'];
+    return stopWords.includes(word);
+  }
+
+  private analyzeSentiment(message: string): any {
+    const positiveWords = ['love', 'like', 'great', 'awesome', 'amazing', 'perfect', 'excellent', 'wonderful', 'good', 'nice', 'happy'];
+    const negativeWords = ['hate', 'dislike', 'bad', 'terrible', 'awful', 'worst', 'disappointed', 'frustrated', 'angry', 'sad'];
+    
+    const words = message.toLowerCase().split(/\s+/);
+    let positiveScore = 0;
+    let negativeScore = 0;
+    
+    words.forEach(word => {
+      if (positiveWords.includes(word)) positiveScore++;
+      if (negativeWords.includes(word)) negativeScore++;
+    });
+    
+    let sentiment = 'neutral';
+    if (positiveScore > negativeScore) sentiment = 'positive';
+    else if (negativeScore > positiveScore) sentiment = 'negative';
+    
+    return { sentiment, confidence: Math.max(positiveScore, negativeScore) / words.length };
+  }
+
+  private classifyIntent(message: string, tokens: string[]): any {
+    const intents: any = {
+      greeting: { patterns: ['hi', 'hello', 'hey', 'good', 'morning', 'evening'], score: 0 },
+      product_inquiry: { patterns: ['show', 'find', 'look', 'search', 'need', 'want', 'buy'], score: 0 },
+      price_inquiry: { patterns: ['price', 'cost', 'expensive', 'cheap', 'budget', 'afford'], score: 0 },
+      comparison: { patterns: ['compare', 'difference', 'better', 'best', 'vs', 'versus'], score: 0 },
+      support: { patterns: ['help', 'support', 'problem', 'issue', 'question'], score: 0 },
+      shipping: { patterns: ['ship', 'delivery', 'when', 'how long', 'fast'], score: 0 }
+    };
+
+    Object.keys(intents).forEach(intent => {
+      intents[intent].score = this.calculateIntentScore(tokens, intents[intent].patterns);
+    });
+
+    const topIntent = Object.entries(intents).sort(([,a], [,b]) => (b as any).score - (a as any).score)[0];
+    return { primary: topIntent[0], confidence: (topIntent[1] as any).score, all: intents };
+  }
+
+  private calculateIntentScore(tokens: string[], patterns: string[]): number {
+    let score = 0;
+    patterns.forEach(pattern => {
+      if (tokens.includes(pattern)) score += 1;
+    });
+    return score / patterns.length;
+  }
+
+  private extractEntities(message: string): any {
+    const entities: any = { products: [], features: [], prices: [] };
+    
+    const productPatterns = {
+      headphone: /\b(headphone|earphone|audio|music|sound)\w*\b/gi,
+      phone: /\b(phone|smartphone|mobile|call|camera)\w*\b/gi,
+      watch: /\b(watch|fitness|track|exercise|workout|health)\w*\b/gi,
+      gaming: /\b(gaming|game|mouse|gamer|play)\w*\b/gi
+    };
+
+    Object.entries(productPatterns).forEach(([product, pattern]) => {
+      if (pattern.test(message)) entities.products.push(product);
+    });
+
+    const pricePattern = /₹\s*(\d+(?:,\d+)*)/g;
+    let priceMatch;
+    while ((priceMatch = pricePattern.exec(message)) !== null) {
+      entities.prices.push(parseInt(priceMatch[1].replace(/,/g, '')));
+    }
+
+    return entities;
+  }
+
+  private analyzeContext(message: string): any {
+    const words = message.split(/\s+/);
+    return {
+      messageLength: words.length,
+      hasQuestion: message.includes('?') || /\b(what|how|when|where|why|which|who|can|do|are)\b/i.test(message),
+      urgency: /\b(urgent|asap|now|quick|fast)\b/i.test(message) ? 'high' : 'normal',
+      complexity: words.length > 15 ? 'high' : words.length > 8 ? 'medium' : 'low'
+    };
+  }
+
+  private calculateConfidence(intent: any, entities: any, sentiment: any): number {
+    const intentConf = intent.confidence || 0;
+    const entityConf = entities.products.length > 0 ? 0.8 : 0.3;
+    const sentimentConf = sentiment.confidence || 0.5;
+    return (intentConf + entityConf + sentimentConf) / 3;
+  }
+
+  private generateIntelligentResponse(message: string, analysis: any): string {
+    const { intent, sentiment, entities, context, confidence } = analysis;
+    
+    // High confidence responses
+    if (confidence > 0.6) {
+      return this.getHighConfidenceResponse(intent, entities, sentiment, context);
     }
     
-    // How are you / personal questions
-    if (this.matchesPattern(lowerMessage, ['how are you', 'how do you do', 'what\'s up', 'how\'s it going'])) {
-      const responses = [
-        'I\'m doing great, thank you for asking! I\'m excited to help you find some amazing products today. What can I assist you with?',
-        'I\'m fantastic! Ready to help you discover the perfect items for your needs. What are you shopping for?',
-        'I\'m wonderful, thanks! I love helping customers find exactly what they\'re looking for. How can I help you today?'
-      ];
-      return this.getRandomResponse(responses);
+    // Medium confidence responses
+    if (confidence > 0.3) {
+      return this.getMediumConfidenceResponse(intent, entities, sentiment, context);
     }
     
-    // Product searches - Audio
-    if (this.matchesPattern(lowerMessage, ['headphones', 'earphones', 'audio', 'music', 'sound', 'listen to music', 'need headphones'])) {
-      return '🎧 Perfect choice! I recommend our Wireless Bluetooth Headphones for ₹6,639. They feature noise cancellation, 30-hour battery life, and crystal-clear sound quality. They\'re currently in stock and very popular with our customers!';
+    // Low confidence - contextual fallback
+    return this.getContextualFallback(message, analysis);
+  }
+
+  private getHighConfidenceResponse(intent: any, entities: any, sentiment: any, context: any): string {
+    switch (intent.primary) {
+      case 'greeting':
+        return this.getPersonalizedGreeting(sentiment);
+      case 'product_inquiry':
+        return this.getProductResponse(entities);
+      case 'price_inquiry':
+        return this.getPriceResponse(entities, context);
+      case 'comparison':
+        return this.getComparisonResponse();
+      case 'support':
+        return this.getSupportResponse(context);
+      case 'shipping':
+        return this.getShippingResponse(context);
+      default:
+        return this.getGeneralResponse(entities, sentiment);
+    }
+  }
+
+  private getMediumConfidenceResponse(intent: any, entities: any, sentiment: any, context: any): string {
+    const responses = [
+      `I think you're asking about ${intent.primary.replace('_', ' ')}. Let me help you with that!`,
+      `Based on what I understand, you're interested in ${entities.products.join(', ') || 'our products'}. Here's what I can tell you:`,
+      `I'm picking up that you want to know about ${intent.primary.replace('_', ' ')}. How can I assist?`
+    ];
+    return this.getRandomResponse(responses) + ' ' + this.getBasicProductInfo();
+  }
+
+  private getContextualFallback(message: string, analysis: any): string {
+    const { context, sentiment } = analysis;
+    
+    if (context.hasQuestion) {
+      return 'That\'s a great question! I\'m here to help with product recommendations, pricing, or any shopping questions. Could you be more specific about what you\'re looking for?';
     }
     
-    // Product searches - Fitness/Watch
-    if (this.matchesPattern(lowerMessage, ['watch', 'fitness', 'track', 'exercise', 'workout', 'health', 'steps', 'heart rate', 'smartwatch'])) {
-      return '⌚ Excellent! Our Smart Fitness Watch (₹16,599) would be perfect for you. It tracks heart rate, GPS, steps, and integrates seamlessly with your smartphone. With a 4.3/5 star rating, it\'s loved by fitness enthusiasts!';
+    if (context.messageLength <= 3) {
+      return 'I\'m here to help! Could you tell me more about what you\'re looking for? I can assist with products, pricing, or any questions!';
     }
     
-    // Product searches - Phone
-    if (this.matchesPattern(lowerMessage, ['phone', 'smartphone', 'mobile', 'call', 'camera', 'photos', 'new phone'])) {
-      return '📱 Great timing! Our Smartphone Pro Max (₹82,999) is our flagship device with an advanced camera system, 5G connectivity, and premium performance. It has an outstanding 4.8/5 star rating!';
+    if (sentiment.sentiment === 'positive') {
+      return 'I love your enthusiasm! I\'m here to help you find amazing products. What can I show you today?';
     }
     
-    // Product searches - Gaming
-    if (this.matchesPattern(lowerMessage, ['gaming', 'game', 'mouse', 'gamer', 'play games', 'gaming setup'])) {
-      return '🎮 For gaming, I highly recommend our Wireless Gaming Mouse (₹7,469)! It features high-precision sensors, RGB lighting, customizable buttons, and wireless freedom for competitive gaming.';
+    if (sentiment.sentiment === 'negative') {
+      return 'I understand your concern. Let me help you find something better! What specific features are important to you?';
     }
     
-    // Budget questions
-    if (this.matchesPattern(lowerMessage, ['cheap', 'budget', 'affordable', 'low price', 'inexpensive', 'save money', 'don\'t want to spend much'])) {
-      return '💰 I understand you\'re looking for great value! Our most budget-friendly option is the Wireless Charger for just ₹2,489. We also have quality products at various price points. What type of product interests you?';
-    }
-    
-    // Premium/expensive
-    if (this.matchesPattern(lowerMessage, ['expensive', 'premium', 'best', 'top', 'high-end', 'luxury', 'flagship', 'want the best'])) {
-      return '✨ For premium quality, our Smartphone Pro Max (₹82,999) is our flagship product with cutting-edge technology and the highest rating of 4.8/5 stars. It\'s worth every rupee!';
-    }
-    
-    // Shopping help
-    if (this.matchesPattern(lowerMessage, ['help', 'assist', 'support', 'what can you do', 'how can you help', 'need help'])) {
-      return '🤖 I\'m here to be your personal shopping assistant! I can help you find products, compare features, check prices, answer questions about shipping and returns, and provide personalized recommendations. What would you like to explore?';
-    }
-    
-    // Shipping questions
-    if (this.matchesPattern(lowerMessage, ['shipping', 'delivery', 'ship', 'deliver', 'when will', 'how long', 'fast delivery'])) {
-      return '🚚 Great question! We offer FREE shipping on orders over ₹5,000. Standard delivery takes 3-5 business days, and we also have express delivery options for faster shipping. Your order will be carefully packaged and tracked!';
-    }
-    
-    // Return policy
-    if (this.matchesPattern(lowerMessage, ['return', 'refund', 'exchange', 'policy', 'not satisfied', 'money back'])) {
-      return '🔄 We want you to be completely happy with your purchase! We offer a 30-day return policy. Items must be in original condition. If you\'re not 100% satisfied, we\'ll make it right!';
-    }
-    
-    // Thank you
-    if (this.matchesPattern(lowerMessage, ['thank you', 'thanks', 'appreciate', 'grateful'])) {
-      return 'You\'re very welcome! I\'m so happy I could help. If you need anything else or have more questions, I\'m always here for you. Happy shopping! 😊';
-    }
-    
-    // Goodbye
-    if (this.matchesPattern(lowerMessage, ['bye', 'goodbye', 'see you', 'talk later', 'have a good day'])) {
-      return 'Goodbye! It was wonderful helping you today. Feel free to come back anytime if you need assistance. Have a fantastic day! 👋';
-    }
-    
-    // Compliments about the bot
-    if (this.matchesPattern(lowerMessage, ['you\'re great', 'you\'re helpful', 'good job', 'awesome', 'amazing', 'smart'])) {
-      return 'Aww, thank you so much! That really makes my day! I love helping customers find exactly what they need. Is there anything else I can help you with? 😊';
-    }
-    
-    // Questions about the bot
-    if (this.matchesPattern(lowerMessage, ['who are you', 'what are you', 'tell me about yourself', 'your name'])) {
-      return 'I\'m REX, your AI stylist and shopping assistant! I\'m here to help you discover amazing products, answer your questions, and make your shopping experience delightful. I know all about our products and love helping customers find perfect matches!';
-    }
-    
-    // General product inquiry
-    if (this.matchesPattern(lowerMessage, ['what do you have', 'show me products', 'what\'s available', 'browse', 'catalog'])) {
-      return '🛍️ We have an amazing selection! Our popular categories include electronics (headphones, smartphones, fitness watches), accessories, and more. What type of product interests you most? I can give you personalized recommendations!';
-    }
-    
-    // Conversational fallbacks with context understanding
-    const conversationalResponses = [
-      'That\'s interesting! I\'d love to help you find something perfect for your needs. Could you tell me what type of product you\'re looking for?',
-      'I understand! Let me help you with that. Are you interested in electronics, accessories, or something specific? I can provide great recommendations!',
-      'Absolutely! I\'m here to make your shopping experience amazing. What can I help you discover today?',
-      'I hear you! Let me assist you in finding exactly what you need. What type of products are you most interested in?',
-      'That makes sense! I\'m here to help you find the perfect products. Would you like to explore our electronics, or do you have something specific in mind?'
+    const contextualResponses = [
+      'I understand! As your AI shopping assistant, I\'m here to help you find exactly what you need. What can I assist you with?',
+      'That\'s interesting! I can help you discover amazing products. Tell me more about what you\'re looking for!',
+      'I\'m here to assist! Whether you need product recommendations or have questions, I\'m ready to help. What interests you?'
     ];
     
-    return this.getRandomResponse(conversationalResponses);
+    return this.getRandomResponse(contextualResponses);
   }
-  
-  private matchesPattern(message: string, patterns: string[]): boolean {
-    return patterns.some(pattern => message.includes(pattern));
+
+  private getPersonalizedGreeting(sentiment: any): string {
+    if (sentiment.sentiment === 'positive') {
+      return 'Hello! I can sense your positive energy! 😊 I\'m REX, and I\'m excited to help you find amazing products today!';
+    }
+    return 'Hello! I\'m REX, your AI shopping assistant. How can I help you discover the perfect products today?';
   }
-  
+
+  private getProductResponse(entities: any): string {
+    if (entities.products.includes('headphone')) {
+      return '🎧 Perfect choice! Our Wireless Bluetooth Headphones (₹6,639) feature noise cancellation, 30-hour battery life, and premium sound quality!';
+    }
+    if (entities.products.includes('phone')) {
+      return '📱 Great timing! Our Smartphone Pro Max (₹82,999) has advanced cameras, 5G connectivity, and 4.8⭐ rating!';
+    }
+    if (entities.products.includes('watch')) {
+      return '⌚ Excellent! Our Smart Fitness Watch (₹16,599) tracks health metrics, GPS, and has 4.3⭐ rating!';
+    }
+    if (entities.products.includes('gaming')) {
+      return '🎮 For gaming, try our Wireless Gaming Mouse (₹7,469) with high-precision sensors and RGB lighting!';
+    }
+    return '🛍️ We have amazing electronics! What specific type of product interests you most?';
+  }
+
+  private getPriceResponse(entities: any, context: any): string {
+    const urgency = context.urgency === 'high' ? ' We have express options available!' : '';
+    return `💰 Our products range from ₹2,489 (Wireless Charger) to ₹82,999 (Smartphone Pro Max).${urgency} What's your budget range?`;
+  }
+
+  private getComparisonResponse(): string {
+    return '📊 I\'d love to help you compare! Our top performers: Smartphone Pro Max (4.8⭐), Smart Fitness Watch (4.3⭐), and Wireless Headphones (4.5⭐). What aspects matter most?';
+  }
+
+  private getSupportResponse(context: any): string {
+    if (context.urgency === 'high') {
+      return '🚨 I understand this is urgent! I\'m here to help immediately. What specific issue can I resolve for you?';
+    }
+    return '🤖 I\'m here to provide comprehensive support! I can help with products, pricing, shipping, returns, or any concerns. What do you need?';
+  }
+
+  private getShippingResponse(context: any): string {
+    if (context.urgency === 'high') {
+      return '🚚 For urgent orders, we offer same-day delivery in select areas! Standard shipping is FREE on orders over ₹5,000.';
+    }
+    return '🚚 We offer FREE shipping on orders over ₹5,000! Standard delivery takes 3-5 business days with tracking.';
+  }
+
+  private getGeneralResponse(entities: any, sentiment: any): string {
+    return 'I\'m here to help you find exactly what you need! Whether it\'s electronics, pricing info, or product recommendations, just let me know what interests you.';
+  }
+
+  private getBasicProductInfo(): string {
+    return 'We have headphones, smartphones, fitness watches, gaming accessories, and more!';
+  }
+
   private getRandomResponse(responses: string[]): string {
     return responses[Math.floor(Math.random() * responses.length)];
   }
