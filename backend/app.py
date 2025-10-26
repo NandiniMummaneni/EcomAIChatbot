@@ -1,13 +1,38 @@
-from flask import Flask, jsonify, request
-from flask_cors import CORS
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from typing import List, Optional
 import json
 import os
 
-app = Flask(__name__)
-CORS(app)
+# Optimized FastAPI app with minimal overhead
+app = FastAPI(
+    title="EcomAI Backend", 
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url=None,  # Disable ReDoc for minimal footprint
+    openapi_url="/openapi.json"
+)
+
+# Minimal CORS - only allow frontend origin
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],  # Only Angular app
+    allow_credentials=False,  # Disable for performance
+    allow_methods=["GET"],  # Only needed methods
+    allow_headers=["*"],
+)
+
+# Cached products data for optimal performance
+_products_cache = None
+
+def get_products_cache():
+    global _products_cache
+    if _products_cache is None:
+        _products_cache = products_data
+    return _products_cache
 
 # Products data stored in Python
-products = [
+products_data = [
     {
         "id": 1,
         "name": "Wireless Bluetooth Headphones",
@@ -110,24 +135,27 @@ products = [
     }
 ]
 
-@app.route('/products', methods=['GET'])
-def get_products():
-    category = request.args.get('category')
+@app.get("/products")
+def get_products(category: Optional[str] = None):
+    products = get_products_cache()  # Use cached data
     if category:
-        filtered_products = [p for p in products if p['category'] == category]
-        return jsonify(filtered_products)
-    return jsonify(products)
+        # Optimized list comprehension
+        return [p for p in products if p['category'] == category]
+    return products
 
-@app.route('/products/<int:product_id>', methods=['GET'])
-def get_product(product_id):
+@app.get("/products/{product_id}")
+def get_product(product_id: int):
+    products = get_products_cache()  # Use cached data
+    # Optimized lookup using next() with generator
     product = next((p for p in products if p['id'] == product_id), None)
     if product:
-        return jsonify(product)
-    return jsonify({'error': 'Product not found'}), 404
+        return product
+    return {'error': 'Product not found'}
 
-@app.route('/health', methods=['GET'])
+@app.get("/health")
 def health_check():
-    return jsonify({'status': 'healthy', 'message': 'EcomAI Backend is running'})
+    return {'status': 'healthy', 'message': 'EcomAI Backend is running'}
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=3000)
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=3000, reload=True)

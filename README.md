@@ -1,24 +1,120 @@
-**🤖 AI-Ready Chatbot Platform (Project Name - HYKAA MVP):**
+# EcomAI - Smart Shopping Cart App
 
-A responsive, full-stack application featuring a **lightweight, custom-built chatbot** currently deployed on an **Angular** frontend. This project demonstrates core Full Stack proficiency, clean API design, and a clear pathway for advanced AI integration, leveraging a modern Python/ML architecture.
+![Hykaa](Hykaa.jpeg)
 
-**🌟 Key Features(Current MVP - Showcasing Core Competancy):**
+A modern e-commerce application built with Angular 17.3.17 featuring an AI chatbot assistant named REX.
 
-**1. Full-Stack Architecture:** Client-side built using **Angular** and **TypeScript** for a dynamic, interactive UI.
-**2. Rule-Based Backend:** Utilizes a custom, highly optimized, minimal-dependency Python engine for immediate, low-latency pattern matching.
-**3. Minimal Latency:** Achieves ultra-fast response times through simple pattern matching, proving capability in performance-focused API design.
-**4. API Foundation:** Designed with a scalable REST API to easily interchange the current rule-based engine with future complex AI models.
+## Features
 
-**📈 AI/ML Roadmap & Future Scope (Highlighting AI Expertise):**
-The core purpose of this project is to serve as a production-ready base for implementing advanced AI/ML features. Future updates will strategically leverage specialized skills, including:
+- 🛍️ **E-commerce Functionality**: Product browsing, cart management, wishlist
+- 🤖 **AI Chatbot**: REX - Interactive shopping assistant with purple gradient theme
+- 📱 **Responsive Design**: Mobile-friendly layouts
+- 🗺️ **Store Locator**: Interactive footer with store information
+- 🔄 **State Management**: Services for cart, wishlist, and products
+- 🌐 **SPA Routing**: Seamless navigation between pages
 
-**Natural Language Understanding (NLU):** Transitioning from rule-based to context-aware NLP using Python with libraries like Hugging Face Transformers for sentiment and intent analysis.
-**1. LLM Integration:** Integrating an LLM-powered agent (e.g., via LangChain or direct GPT API) to provide deep, context-aware shopping recommendations and multi-turn conversational support.
-**2. MLOps Deployment:** Utilizing Azure for scalable cloud deployment and implementing robust MLOps workflows for model versioning, continuous training, and monitoring of predictive analytics models.
-**3. Predictive Analytics:** Developing a deep learning model to predict customer purchasing behavior based on chat history and browsing patterns.
+## Tech Stack
 
-**🛠️ Technology Stack:**
-**1. Frontend** - Angular, TypeScript, HTML5, CSS
-**2. Backend/Core** - Python, FastAPI/Flask (for REST APIs)
-**3. Future AI Focus** - LLMs, NLP, Deep Learning, LangChain, Hugging Face
-**4. Cloud/DevOps** - Azure (Deployment target), Git, CI/CD
+- **Framework**: Angular 17.3.17 (Standalone Components)
+- **Language**: TypeScript
+- **Styling**: CSS with modern gradients and animations
+- **Backend**: JSON Server (mock API)
+- **Architecture**: Component-based with services and routing
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── header/          # Navigation component
+│   │   ├── home/            # Landing page
+│   │   ├── product-list/    # Product catalog
+│   │   ├── product-detail/  # Individual product view
+│   │   ├── cart/            # Shopping cart
+│   │   ├── wishlist/        # Favorite products
+│   │   ├── footer/          # Contact info & store locator
+│   │   ├── login/           # User authentication
+│   │   └── chatbot/         # REX AI Assistant
+│   ├── services/
+│   │   ├── product.service.ts
+│   │   ├── cart.service.ts
+│   │   └── wishlist.service.ts
+│   └── models/
+│       └── product.model.ts
+└── mock.json               # Sample product data
+```
+
+## Setup Instructions
+
+1. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Start Mock API Server**
+   ```bash
+   npm run serve:api
+   ```
+   This starts JSON Server on http://localhost:3000
+
+3. **Start Angular Development Server**
+   ```bash
+   npm start
+   ```
+   Application runs on http://localhost:4200
+
+4. **Build for Production**
+   ```bash
+   npm run build
+   ```
+
+## Components Overview
+
+### Core Components
+- **Header**: Navigation with cart/wishlist counters
+- **Home**: Hero section with product categories
+- **Product List**: Grid view with filtering and search
+- **Product Detail**: Detailed product information
+- **Cart**: Shopping cart with quantity management
+- **Wishlist**: Favorite products management
+- **Footer**: Store locator and business information
+- **Login**: User authentication form
+
+### AI Features
+- **REX Chatbot**: Purple gradient themed AI assistant
+- Interactive chat interface
+- Context-aware responses for shopping queries
+- Floating chat widget
+
+## Services
+
+- **ProductService**: API interactions for product data
+- **CartService**: Shopping cart state management
+- **WishlistService**: Wishlist functionality
+
+## Styling
+
+- Modern gradient themes (purple/blue)
+- Responsive grid layouts
+- Smooth animations and transitions
+- Mobile-first design approach
+
+## API Endpoints
+
+Mock API provides:
+- `GET /products` - All products
+- `GET /products/:id` - Single product
+- `GET /products?category=:category` - Products by category
+
+## Development
+
+The app uses Angular 17.3.17 standalone components architecture for better tree-shaking and performance. All components are lazy-loaded for optimal bundle size.
+
+## Future Enhancements
+
+- User authentication integration
+- Payment processing
+- Real-time inventory updates
+- Advanced AI chatbot features
+- Store locator with maps integration

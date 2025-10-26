@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:api": "json-server --watch mock.json --port 3000",
-    "serve:python-api": "cd backend && python run.py"
+    "serve:python-api": "cd backend && uvicorn app:app --host 0.0.0.0 --port 3000 --reload"
   },
   "dependencies": {
     "@angular/animations": "^17.0.0",
